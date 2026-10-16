@@ -1,0 +1,19 @@
+# Exemplo de override para uma VPS que já tem um Caddy atendendo 443 (certificado Origin CA da Cloudflare)
+# e alcança o Radar pela rede externa radar_net. Nenhuma porta publicada aqui.
+#   docker network create radar_net   (uma vez)
+#   docker compose -f compose.yaml -f compose.contabo.yaml up -d --build
+services:
+  oauth2-proxy:
+    container_name: radar-oauth2
+    ports: !reset []
+    networks: [default, radar_net]
+  radar:
+    container_name: radar-app
+  rsshub:
+    container_name: radar-rsshub
+  redis:
+    container_name: radar-redis
+
+networks:
+  radar_net:
+    external: true

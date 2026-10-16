@@ -1,0 +1,246 @@
+# Nicho: anime, mangá e dublagem (Shinbun). Copie este arquivo para criar outro nicho.
+# papel: primaria (fonte que se cita) · alerta (avisa que saiu algo; confirmar na primária)
+#        brasil (contexto "No Brasil:") · concorrente (só mede quem chegou antes)
+nome = "Anime, mangá e dublagem"
+descricao = "Fontes japonesas primárias, alertas em inglês, Brasil (editoras, Crunchyroll, dublagem) e concorrentes BR."
+
+[papeis]
+primaria = "Fonte japonesa que se cita no post."
+alerta = "Alertas em inglês; confirmar na primária antes de postar."
+brasil = "Contexto do No Brasil: editoras, streaming, dublagem."
+concorrente = "Perfis BR concorrentes; medem quem chegou antes."
+
+
+[[feed]]
+nome = "Anime News Network"
+url = "https://www.animenewsnetwork.com/newsroom/rss.xml?ann-edition=us"
+lingua = "en"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Comic Natalie"   # natalie.mu bloqueia bots (AWS WAF); o Google News indexa
+url = "https://news.google.com/rss/search?q=site:natalie.mu/comic&hl=ja&gl=JP&ceid=JP:ja"
+lingua = "ja"
+peso = 1.3
+papel = "primaria"
+
+[[feed]]
+nome = "Anime!Anime!"
+url = "https://animeanime.jp/rss/index.rdf"
+lingua = "ja"
+peso = 1.1
+papel = "primaria"
+
+[[feed]]
+nome = "Famitsu (anime)"
+url = "http://127.0.0.1:1200/famitsu/category/anime"
+lingua = "ja"
+peso = 1.0
+papel = "primaria"
+
+[[feed]]
+nome = "Crunchyroll Brasil"   # fonte primária de simulcast e dublagem no Brasil
+url = "https://cr-news-api-service.prd.crunchyrollsvc.com/v1/pt-BR/rss"
+lingua = "pt"
+peso = 1.3
+papel = "brasil"
+
+[[feed]]
+nome = "Anime Corner"
+url = "https://animecorner.me/feed/"
+lingua = "en"
+peso = 0.8
+papel = "alerta"
+
+[[feed]]
+nome = "Siliconera"
+url = "https://www.siliconera.com/feed/"
+lingua = "en"
+peso = 0.7
+papel = "alerta"
+
+# X pelo RSSHub (precisa de TWITTER_AUTH_TOKEN no .env). É onde o anúncio sai primeiro.
+[[feed]]
+nome = "X @comic_natalie"
+url = "http://127.0.0.1:1200/twitter/user/comic_natalie"
+lingua = "ja"
+peso = 1.4
+papel = "primaria"
+
+[[feed]]
+nome = "X @WSJ_manga (Jump)"
+url = "http://127.0.0.1:1200/twitter/user/WSJ_manga"
+lingua = "ja"
+peso = 1.4
+papel = "primaria"
+
+[[feed]]
+nome = "X @animatetimes"   # Animate Times não tem RSS; a conta do X substitui
+url = "http://127.0.0.1:1200/twitter/user/animatetimes"
+lingua = "ja"
+peso = 1.1
+papel = "primaria"
+
+[[feed]]
+nome = "X @mantanotaku"  # recorte da MANTANWEB só com anime/mangá/tokusatsu (a @mantanweb mistura novela e moda)
+url = "http://127.0.0.1:1200/twitter/user/mantanotaku"
+lingua = "ja"
+peso = 1.0
+papel = "primaria"
+
+[[feed]]
+nome = "X @animetv_jp"  # AnimeTV oficial: trailers e anúncios em inglês
+url = "http://127.0.0.1:1200/twitter/user/animetv_jp"
+lingua = "en"
+peso = 1.1
+papel = "alerta"
+
+[[feed]]
+nome = "X @MangaMoguraRE"  # agregador rápido de mangá; conferir na fonte antes de postar
+url = "http://127.0.0.1:1200/twitter/user/MangaMoguraRE"
+lingua = "en"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "X @jump_henshubu"  # editorial da Weekly Shonen Jump
+url = "http://127.0.0.1:1200/twitter/user/jump_henshubu"
+lingua = "ja"
+peso = 1.2
+papel = "primaria"
+
+[[feed]]
+nome = "X @shonenjump_plus"
+url = "http://127.0.0.1:1200/twitter/user/shonenjump_plus"
+lingua = "ja"
+peso = 1.0
+papel = "primaria"
+
+[[feed]]
+nome = "X @ufotable"
+url = "http://127.0.0.1:1200/twitter/user/ufotable"
+lingua = "ja"
+peso = 1.0
+papel = "primaria"
+
+[[feed]]
+nome = "X @MAPPA_Info"
+url = "http://127.0.0.1:1200/twitter/user/MAPPA_Info"
+lingua = "ja"
+peso = 1.0
+papel = "primaria"
+
+[[feed]]
+nome = "X @oricon_anime_"  # Oricon só anime/seiyuu; foi a mais rápida no caso Nue's Exorcist
+url = "http://127.0.0.1:1200/twitter/user/oricon_anime_"
+lingua = "ja"
+peso = 1.3
+papel = "primaria"
+
+[[feed]]
+nome = "X @AIR_News01"  # alerta em inglês, só anúncio confirmado
+url = "http://127.0.0.1:1200/twitter/user/AIR_News01"
+lingua = "en"
+peso = 1.0
+papel = "alerta"
+
+# Brasil: alimenta o "No Brasil:" (licença de mangá, dublagem).
+[[feed]]
+nome = "JBC"
+url = "https://editorajbc.com.br/feed/"
+lingua = "pt"
+peso = 1.2
+papel = "brasil"
+
+[[feed]]
+nome = "NewPOP"
+url = "https://www.newpop.com.br/feed/"
+lingua = "pt"
+peso = 1.2
+papel = "brasil"
+
+[[feed]]
+nome = "Mangás Brasil"
+url = "https://www.mangasbrasil.com.br/feed/"
+lingua = "pt"
+peso = 1.0
+papel = "brasil"
+
+[[feed]]
+nome = "Google News: Panini mangá"   # Panini não tem feed
+url = "https://news.google.com/rss/search?q=Panini+mang%C3%A1&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "brasil"
+
+[[feed]]
+nome = "Google News: anime dublagem"
+url = "https://news.google.com/rss/search?q=anime+dublagem&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "brasil"
+
+[[feed]]
+nome = "X @Crunchyroll_BR_"  # conta oficial BR: simulcast e dublagem
+url = "http://127.0.0.1:1200/twitter/user/Crunchyroll_BR_"
+lingua = "pt"
+peso = 1.2
+papel = "brasil"
+
+[[feed]]
+nome = "X @versaodublada"  # dublagem BR: bastidores e elenco
+url = "http://127.0.0.1:1200/twitter/user/versaodublada"
+lingua = "pt"
+peso = 1.0
+papel = "brasil"
+
+# Concorrentes BR: entram para medir quem chegou antes, não para virar pauta.
+[[feed]]
+nome = "JBox"
+url = "https://www.jbox.com.br/feed/"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"
+
+[[feed]]
+nome = "ANMTV"
+url = "https://www.anmtv.com.br/feed/"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"
+
+[[feed]]
+nome = "X @AnimeUnitedBR"
+url = "http://127.0.0.1:1200/twitter/user/AnimeUnitedBR"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"
+
+[[feed]]
+nome = "X @jboxbr"
+url = "http://127.0.0.1:1200/twitter/user/jboxbr"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"
+
+[[feed]]
+nome = "X @dublagembra"  # dublagem
+url = "http://127.0.0.1:1200/twitter/user/dublagembra"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"
+
+[[feed]]
+nome = "X @dublapedia"  # é o X do @dublapediabrasil, não a Dublapédia do usuário
+url = "http://127.0.0.1:1200/twitter/user/dublapedia"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"
+
+[[feed]]
+nome = "X @_OtakusBR"  # maior perfil BR de notícia no X
+url = "http://127.0.0.1:1200/twitter/user/_OtakusBR"
+lingua = "pt"
+peso = 0.5
+papel = "concorrente"

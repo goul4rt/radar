@@ -1,0 +1,13 @@
+.env
+dados/
+dados-v1.bak/
+*.bak
+radar.log
+deploy/.env
+deploy/dados/
+deploy/backups/
+*.bak*
+__pycache__/
+.wrangler/
+deploy/OPERACAO.md
+deploy/cloudflare-borda/wrangler.toml

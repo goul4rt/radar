@@ -1,0 +1,18 @@
+name = "radarrss-borda"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+preview_urls = false
+
+[[routes]]
+pattern = "radar.seudominio.com"
+custom_domain = true
+
+# limite por IP para rotas não cacheadas (login, app, API, MCP)
+[[ratelimits]]
+name = "LIMITE"
+namespace_id = "1210"
+simple = { limit = 120, period = 60 }
+
+[vars]
+ORIGEM = "origem.seudominio.com"   # registro DNS que já aponta para o servidor

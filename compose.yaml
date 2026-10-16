@@ -1,0 +1,12 @@
+# RSSHub do Radar: um só para todos os sistemas (Shinbun e os próximos). UI/API do Radar: python3 radar.py (porta 1210).
+services:
+  rsshub:
+    image: diygod/rsshub:latest
+    restart: unless-stopped
+    ports: ["127.0.0.1:1200:1200"]   # 1200 livre; não usar 5432/6379/6432/6433
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: memory              # ponytail: cache em memória; redis se o volume de rotas crescer
+      CACHE_EXPIRE: 600
+      TZ: America/Sao_Paulo
+      TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN}   # do .env (cookie auth_token de uma conta do X)

@@ -1,0 +1,96 @@
+# Radar online (Contabo ou qualquer VPS com Docker). Só o oauth2-proxy recebe tráfego; Radar, RSSHub e Redis
+# ficam na rede interna, sem porta publicada.
+#   Caminho padrão: Cloudflare Tunnel (sem abrir porta na VPS)  -> docker compose --profile cloudflare up -d
+#   Sem Cloudflare: Caddy com HTTPS automático (portas 80/443)  -> docker compose --profile caddy up -d
+services:
+  radar:
+    build: { context: .., dockerfile: deploy/Dockerfile }
+    restart: unless-stopped
+    environment:
+      RADAR_URL: https://${RADAR_DOMINIO}
+      RADAR_ADMINS: ${RADAR_ADMINS}
+      RADAR_LIMITE_NICHOS: ${RADAR_LIMITE_NICHOS:-10}
+      RADAR_LIMITE_FONTES: ${RADAR_LIMITE_FONTES:-100}
+    volumes: ["./dados:/app/dados"]
+    depends_on: [rsshub]
+    # limites: um container travado não derruba os outros sites da VPS
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 128
+
+  rsshub:
+    image: diygod/rsshub:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: redis://redis:6379/
+      CACHE_EXPIRE: 600
+      TZ: America/Sao_Paulo
+      TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN:-}
+    depends_on: [redis]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 256
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
+    mem_limit: 192m
+    cpus: 0.25
+    pids_limit: 64
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    restart: unless-stopped
+    mem_limit: 96m
+    cpus: 0.5
+    pids_limit: 64
+    command:
+      - --provider=google
+      - --http-address=0.0.0.0:4180
+      - --upstream=http://radar:1210
+      - --email-domain=*
+      - --reverse-proxy=true
+      - --cookie-secure=true
+      - --cookie-samesite=lax
+      - --redirect-url=https://${RADAR_DOMINIO}/oauth2/callback
+      - --pass-user-headers=true
+      - --skip-provider-button=true
+      # sem login: nichos públicos, privacidade, API e MCP (estes dois exigem a chave de API do próprio Radar).
+      # Nessas rotas o proxy APAGA os cabeçalhos de identidade (skip-auth-strip-headers, padrão true).
+      - --skip-auth-route=^/$
+      - --skip-auth-route=^/static/
+      - --skip-auth-route=^/p(/.*)?$
+      - --skip-auth-route=^/privacidade$
+      - --skip-auth-route=^/api(/.*)?$
+      - --skip-auth-route=^/mcp$
+      - --skip-auth-strip-headers=true
+    environment:
+      OAUTH2_PROXY_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      OAUTH2_PROXY_COOKIE_SECRET: ${COOKIE_SECRET}
+    depends_on: [radar]
+    ports: ["127.0.0.1:4180:4180"]   # só para teste local; o tráfego real chega pelo tunnel ou pelo Caddy
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: ["tunnel", "--no-autoupdate", "run"]
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on: [oauth2-proxy]
+    profiles: ["cloudflare"]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    command: ["caddy", "reverse-proxy", "--from", "${RADAR_DOMINIO}", "--to", "oauth2-proxy:4180"]
+    ports: ["80:80", "443:443"]
+    volumes: ["caddy:/data"]
+    depends_on: [oauth2-proxy]
+    profiles: ["caddy"]
+
+volumes:
+  caddy:
