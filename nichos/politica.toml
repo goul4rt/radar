@@ -1,0 +1,712 @@
+# =====================================================================
+# Nicho: Política Brasil (Fato Colado / Radar)
+# Arquitetura de Confiança Zero para Jornalismo Institucional
+# Mapeamento com feeds nativos confirmados e fallbacks via Google News (anti-WAF)
+# =====================================================================
+
+nome = "Política Brasil"
+descricao = "Fontes primárias oficiais de Brasília, tribunais superiores e alertas de apuração política."
+
+[papeis]
+primaria = "Decisão judicial, ato oficial ou documento público original (TSE, STF, Planalto, DOU, Congresso)"
+alerta = "Grandes veículos de imprensa e apuração que sinalizam acontecimentos"
+regional = "Notícias institucionais e políticas de Mato Grosso e Cuiabá"
+
+# =====================================================================
+# GRUPO A: JUDICIÁRIO & ELEITORAL (primaria, 1.3 a 1.5)
+# =====================================================================
+
+# [A] STF Notícias. FALLBACK Google News (WAF bypass).
+[[feed]]
+nome = "STF - Notícias Oficiais (via Google News)"
+url = "https://news.google.com/rss/search?q=site:noticias.stf.jus.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.5
+papel = "primaria"
+
+# [A] STF Plenário e Julgamentos. FALLBACK Google News.
+[[feed]]
+nome = "STF - Plenário e Julgamentos (via Google News)"
+url = "https://news.google.com/rss/search?q=site:noticias.stf.jus.br%20Plen%C3%A1rio&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.5
+papel = "primaria"
+
+# [A] TSE Notícias. FALLBACK Google News (site oficial bloqueia robôs).
+[[feed]]
+nome = "TSE - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tse.jus.br/comunicacao/noticias&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.5
+papel = "primaria"
+
+# [A] TSE Resoluções. FALLBACK Google News.
+[[feed]]
+nome = "TSE - Resoluções (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tse.jus.br%20resolu%C3%A7%C3%A3o&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [A] TSE Julgamentos, Multas e Campanhas. FALLBACK Google News.
+[[feed]]
+nome = "TSE - Julgamentos, Multas e Campanhas (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tse.jus.br%20(multa%20OR%20Plen%C3%A1rio%20OR%20propaganda)&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [A] STJ Notícias. FALLBACK Google News (o endpoint nativo res.stj.jus.br bloqueia robôs via F5 WAF).
+[[feed]]
+nome = "STJ - Superior Tribunal de Justiça (via Google News)"
+url = "https://news.google.com/rss/search?q=site:stj.jus.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [A] CNJ Notícias. FALLBACK Google News.
+[[feed]]
+nome = "CNJ - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:cnj.jus.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# =====================================================================
+# GRUPO B: EXECUTIVO & LEGISLAÇÃO (primaria, 1.3 a 1.5)
+# =====================================================================
+
+# [B] Planalto Notícias (Atom nativo).
+[[feed]]
+nome = "Planalto - Notícias (Atom nativo)"
+url = "https://www.gov.br/planalto/pt-br/acompanhe-o-planalto/noticias/atom.xml"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [B] Planalto Notícias (Google News fallback em paralelo).
+[[feed]]
+nome = "Planalto - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:gov.br/planalto/pt-br/acompanhe-o-planalto&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [B] Planalto Legislação (ccivil_03). FALLBACK Google News.
+[[feed]]
+nome = "Planalto - Legislação ccivil_03 (via Google News)"
+url = "https://news.google.com/rss/search?q=site:planalto.gov.br/ccivil_03&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.5
+papel = "primaria"
+
+# [B] DOU Seção 1 (Atos Normativos). FALLBACK Google News.
+[[feed]]
+nome = "DOU - Atos publicados (via Google News)"
+url = "https://news.google.com/rss/search?q=site:in.gov.br/web/dou&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# [B] Ministério da Fazenda. FALLBACK Google News.
+[[feed]]
+nome = "Ministério da Fazenda - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:gov.br/fazenda/pt-br/assuntos/noticias&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# [B] Ministério da Justiça e Segurança Pública. RSS NATIVO.
+[[feed]]
+nome = "Ministério da Justiça e Segurança Pública (MJSP)"
+url = "https://www.gov.br/mj/RSS"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# =====================================================================
+# GRUPO C: LEGISLATIVO (primaria, 1.2 a 1.4)
+# =====================================================================
+
+# [C] Agência Senado. RSS NATIVO.
+[[feed]]
+nome = "Agência Senado - Notícias"
+url = "https://www12.senado.leg.br/noticias/RSS"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [C] Agência Câmara Últimas Notícias. RSS NATIVO.
+[[feed]]
+nome = "Agência Câmara - Últimas Notícias"
+url = "https://www.camara.leg.br/noticias/rss/ultimas-noticias"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# [C] Agência Câmara Política. RSS NATIVO dinâmico.
+[[feed]]
+nome = "Agência Câmara - Política"
+url = "https://www.camara.leg.br/noticias/rss/dinamico/POLITICA"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [C] Agência Câmara Eleições. RSS NATIVO dinâmico.
+[[feed]]
+nome = "Agência Câmara - Eleições"
+url = "https://www.camara.leg.br/noticias/rss/dinamico/ELEICOES"
+lingua = "pt"
+peso = 1.2
+papel = "primaria"
+
+# [C] Agência Câmara Direito e Justiça. RSS NATIVO dinâmico.
+[[feed]]
+nome = "Agência Câmara - Direito e Justiça"
+url = "https://www.camara.leg.br/noticias/rss/dinamico/DIREITO-E-JUSTICA"
+lingua = "pt"
+peso = 1.2
+papel = "primaria"
+
+# =====================================================================
+# GRUPO D: CONTROLE & INVESTIGAÇÃO (primaria, 1.2 a 1.4)
+# =====================================================================
+
+# [D] TCU Notícias. FALLBACK Google News.
+[[feed]]
+nome = "TCU - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:portal.tcu.gov.br/imprensa/noticias&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# [D] TCU Acórdãos e auditorias. FALLBACK Google News.
+[[feed]]
+nome = "TCU - Acórdãos e Auditorias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tcu.gov.br%20(ac%C3%B3rd%C3%A3o%20OR%20auditoria)&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# [D] PGR e MPF. FALLBACK Google News (garante bypass do erro 500 do servidor nativo).
+[[feed]]
+nome = "PGR / MPF - Notícias e Denúncias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:mpf.mp.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+# [D] Polícia Federal. FALLBACK Google News.
+[[feed]]
+nome = "Polícia Federal - Notas e Operações (via Google News)"
+url = "https://news.google.com/rss/search?q=site:gov.br/pf/pt-br/assuntos/noticias&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
+
+# =====================================================================
+# GRUPO E: IMPRENSA & ALERTAS (alerta, 0.9 a 1.1)
+# =====================================================================
+
+# [E] Agência Brasil Política. RSS NATIVO.
+[[feed]]
+nome = "Agência Brasil - Política"
+url = "https://agenciabrasil.ebc.com.br/rss/politica/feed.xml"
+lingua = "pt"
+peso = 1.1
+papel = "alerta"
+
+# [E] Poder360. RSS NATIVO.
+[[feed]]
+nome = "Poder360"
+url = "https://www.poder360.com.br/feed/"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+# [E] JOTA. RSS NATIVO.
+[[feed]]
+nome = "JOTA"
+url = "https://jota.info/feed"
+lingua = "pt"
+peso = 1.1
+papel = "alerta"
+
+# [E] Congresso em Foco. RSS NATIVO.
+[[feed]]
+nome = "Congresso em Foco"
+url = "https://congressoemfoco.uol.com.br/feed/"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+# [E] G1 Política. RSS NATIVO.
+[[feed]]
+nome = "G1 - Política"
+url = "https://g1.globo.com/rss/g1/politica/"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+# [E] CNN Brasil Política. RSS NATIVO.
+[[feed]]
+nome = "CNN Brasil - Política"
+url = "https://www.cnnbrasil.com.br/feed/"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+# [E] Folha de S.Paulo Poder. RSS NATIVO.
+[[feed]]
+nome = "Folha de S.Paulo - Poder"
+url = "https://feeds.folha.uol.com.br/poder/rss091.xml"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+# =====================================================================
+# GRUPO F: REGIONAL MT & CUIABÁ (regional, 1.0)
+# =====================================================================
+
+# [F] MidiaNews. RSS NATIVO.
+[[feed]]
+nome = "MidiaNews"
+url = "https://www.midianews.com.br/rss.php"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+# [F] Olhar Direto Política. FALLBACK Google News.
+[[feed]]
+nome = "Olhar Direto - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:olhardireto.com.br%20pol%C3%ADtica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+# [F] Gazeta Digital Política de MT. FALLBACK Google News.
+[[feed]]
+nome = "Gazeta Digital - Política de MT (via Google News)"
+url = "https://news.google.com/rss/search?q=site:gazetadigital.com.br/editorias/politica-de-mt&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+# [F] ALMT. FALLBACK Google News.
+[[feed]]
+nome = "Assembleia Legislativa de MT (via Google News)"
+url = "https://news.google.com/rss/search?q=site:al.mt.gov.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+# [F] TRE-MT. FALLBACK Google News.
+[[feed]]
+nome = "TRE-MT - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tre-mt.jus.br/comunicacao/noticias&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+# =====================================================================
+# EXPANSÃO: ESPECTRO AMPLIADO, INVESTIGATIVO, CHECAGEM, BASTIDORES, MT E VOTAÇÕES
+# =====================================================================
+
+# 1. IMPRENSA NACIONAL (alerta - grande imprensa e centro)
+# =====================================================================
+
+[[feed]]
+nome = "Estadão - Política"
+url = "https://www.estadao.com.br/arc/outboundfeeds/feeds/rss/sections/politica/?body=%7B%22layout%22:%22google-news%22%7D"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "CNN Brasil - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:cnnbrasil.com.br/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "O Globo - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:oglobo.globo.com/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Metrópoles - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:metropoles.com/brasil/politica-brasil&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Correio Braziliense - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:correiobraziliense.com.br/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "UOL - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:noticias.uol.com.br/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "Valor - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:valor.globo.com/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "BBC News Brasil (via Google News)"
+url = "https://news.google.com/rss/search?q=site:bbc.com/portuguese+pol%C3%ADtica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+# =====================================================================
+# 2. ESPECTRO DIREITA / CONSERVADOR (alerta)
+# =====================================================================
+
+[[feed]]
+nome = "Diário do Poder - Política"
+url = "https://diariodopoder.com.br/feed"
+lingua = "pt"
+peso = 0.8
+papel = "alerta"
+
+[[feed]]
+nome = "Jovem Pan - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:jovempan.com.br/noticias/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.8
+papel = "alerta"
+
+[[feed]]
+nome = "Gazeta do Povo - República (via Google News)"
+url = "https://news.google.com/rss/search?q=site:gazetadopovo.com.br/republica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.8
+papel = "alerta"
+
+[[feed]]
+nome = "Revista Oeste - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:revistaoeste.com/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+[[feed]]
+nome = "O Antagonista (via Google News)"
+url = "https://news.google.com/rss/search?q=site:oantagonista.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+# =====================================================================
+# 3. ESPECTRO ESQUERDA / PROGRESSISTA (alerta)
+# =====================================================================
+
+[[feed]]
+nome = "CartaCapital - Política"
+url = "https://www.cartacapital.com.br/politica/feed/"
+lingua = "pt"
+peso = 0.8
+papel = "alerta"
+
+[[feed]]
+nome = "Brasil 247 (via Google News)"
+url = "https://news.google.com/rss/search?q=site:brasil247.com&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+[[feed]]
+nome = "Brasil de Fato - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:brasildefato.com.br/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+[[feed]]
+nome = "Revista Fórum - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:revistaforum.com.br/politica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+[[feed]]
+nome = "Pragmatismo Político"
+url = "https://www.pragmatismopolitico.com.br/feed"
+lingua = "pt"
+peso = 0.6
+papel = "alerta"
+
+# =====================================================================
+# 4. JORNALISMO INVESTIGATIVO E EXPLICATIVO (alerta)
+# =====================================================================
+
+[[feed]]
+nome = "Intercept Brasil"
+url = "https://theintercept.com/feed/?lang=pt"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "Agência Pública (via Google News)"
+url = "https://news.google.com/rss/search?q=site:apublica.org&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Revista piauí (via Google News)"
+url = "https://news.google.com/rss/search?q=site:piaui.folha.uol.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "Nexo Jornal (via Google News)"
+url = "https://news.google.com/rss/search?q=site:nexojornal.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "The Brazilian Report"
+url = "https://brazilian.report/feed/"
+lingua = "en"
+peso = 0.8
+papel = "alerta"
+
+[[feed]]
+nome = "Política Por Inteiro"
+url = "https://politicaporinteiro.org/feed"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "Politize!"
+url = "https://www.politize.com.br/feed/"
+lingua = "pt"
+peso = 0.6
+papel = "alerta"
+
+# =====================================================================
+# 5. CHECAGEM DE FATOS (alerta)
+# =====================================================================
+
+[[feed]]
+nome = "Aos Fatos (via Google News)"
+url = "https://news.google.com/rss/search?q=site:aosfatos.org&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Agência Lupa (via Google News)"
+url = "https://news.google.com/rss/search?q=site:lupa.uol.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Estadão Verifica (via Google News)"
+url = "https://news.google.com/rss/search?q=site:estadao.com.br/estadao-verifica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+[[feed]]
+nome = "g1 Fato ou Fake (via Google News)"
+url = "https://news.google.com/rss/search?q=site:g1.globo.com/fato-ou-fake&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "alerta"
+
+# =====================================================================
+# 6. JURÍDICO (alerta)
+# =====================================================================
+
+[[feed]]
+nome = "Consultor Jurídico - Conjur (via Google News)"
+url = "https://news.google.com/rss/search?q=site:conjur.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+[[feed]]
+nome = "Migalhas - Quentes (via Google News)"
+url = "https://news.google.com/rss/search?q=site:migalhas.com.br/quentes&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "alerta"
+
+# =====================================================================
+# 7. COLUNAS E BLOGS DE BASTIDOR (alerta)
+# =====================================================================
+
+[[feed]]
+nome = "Painel - Folha (via Google News)"
+url = "https://news.google.com/rss/search?q=site:folha.uol.com.br%2Fcolunas%2Fpainel&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+[[feed]]
+nome = "Lauro Jardim - O Globo (via Google News)"
+url = "https://news.google.com/rss/search?q=site:oglobo.globo.com%2Fblogs%2Flauro-jardim&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.7
+papel = "alerta"
+
+[[feed]]
+nome = "Metrópoles - Colunas de política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:metropoles.com%2Fcolunas%2F(guilherme-amado+OR+igor-gadelha)&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.6
+papel = "alerta"
+
+[[feed]]
+nome = "Radar - Veja (via Google News)"
+url = "https://news.google.com/rss/search?q=site:veja.abril.com.br%2Fcoluna%2Fradar&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.6
+papel = "alerta"
+
+[[feed]]
+nome = "Blog do Magno (PE)"
+url = "https://blogdomagno.com.br/feed"
+lingua = "pt"
+peso = 0.5
+papel = "alerta"
+
+[[feed]]
+nome = "Blog do Esmael (PR)"
+url = "https://esmaelmorais.com.br/feed"
+lingua = "pt"
+peso = 0.5
+papel = "alerta"
+
+[[feed]]
+nome = "Política Livre (BA) (via Google News)"
+url = "https://news.google.com/rss/search?q=site:politicalivre.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.5
+papel = "alerta"
+
+# =====================================================================
+# 8. MATO GROSSO AMPLIADO (regional)
+# =====================================================================
+
+[[feed]]
+nome = "FolhaMax - Política (via Google News)"
+url = "https://news.google.com/rss/search?q=site:folhamax.com%2Fpolitica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+[[feed]]
+nome = "RDNews (via Google News)"
+url = "https://news.google.com/rss/search?q=site:rdnews.com.br%2Fpolitica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+[[feed]]
+nome = "HiperNotícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:hnt.com.br%2Fpolitica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+[[feed]]
+nome = "Repórter MT (via Google News)"
+url = "https://news.google.com/rss/search?q=site:reportermt.com&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.0
+papel = "regional"
+
+[[feed]]
+nome = "Só Notícias - Nortão (via Google News)"
+url = "https://news.google.com/rss/search?q=site:sonoticias.com.br%2Fpolitica&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "regional"
+
+[[feed]]
+nome = "TJMT - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tjmt.jus.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.1
+papel = "regional"
+
+[[feed]]
+nome = "MPMT - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:mpmt.mp.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.1
+papel = "regional"
+
+[[feed]]
+nome = "TCE-MT - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:tce.mt.gov.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.1
+papel = "regional"
+
+[[feed]]
+nome = "Governo de Mato Grosso - Notícias (via Google News)"
+url = "https://news.google.com/rss/search?q=site:mt.gov.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.1
+papel = "regional"
+
+[[feed]]
+nome = "Prefeitura de Cuiabá (via Google News)"
+url = "https://news.google.com/rss/search?q=site:cuiaba.mt.gov.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.1
+papel = "regional"
+
+[[feed]]
+nome = "Câmara Municipal de Cuiabá (via Google News)"
+url = "https://news.google.com/rss/search?q=site:cuiaba.mt.leg.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 1.1
+papel = "regional"
+
+[[feed]]
+nome = "Política de MT na imprensa nacional (via Google News)"
+url = "https://news.google.com/rss/search?q=%22Mato%20Grosso%22%20(pol%C3%ADtica%20OR%20Assembleia%20OR%20governador%20OR%20Cuiab%C3%A1)%20-site:olhardireto.com.br%20-site:gazetadigital.com.br%20-site:midianews.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+lingua = "pt"
+peso = 0.9
+papel = "regional"
+
+# =====================================================================
+# 9. MONITORAMENTO LEGISLATIVO E VOTAÇÕES NOMINAIS (primária)
+# =====================================================================
+
+[[feed]]
+nome = "Brasil a Vera - Votações de MT no Congresso"
+url = "https://brasilavera.org/feed/votacoes/uf/MT"
+lingua = "pt"
+peso = 1.4
+papel = "primaria"
+
+[[feed]]
+nome = "Brasil a Vera - Votações Nominais (Câmara e Senado)"
+url = "https://brasilavera.org/feed/votacoes"
+lingua = "pt"
+peso = 1.3
+papel = "primaria"
